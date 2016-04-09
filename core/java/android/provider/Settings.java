@@ -4841,6 +4841,22 @@ public final class Settings {
         public static final String PA_PIE_ENABLE_COLOR = "pa_pie_enable_color";
 
         /**
+<<<<<<< HEAD
+=======
+         * Defines the global heads up notification snooze
+         * @hide
+         */
+        public static final String HEADS_UP_NOTIFICATION_SNOOZE = "heads_up_notification_snooze";
+
+        /**
+         * Settings to backup. This is here so that it's in the same place as the settings
+         * keys and easy to update.
+         *
+         * NOTE: Settings are backed up and restored in the order they appear
+         *       in this array. If you have one setting depending on another,
+         *       make sure that they are ordered appropriately.
+         *
+>>>>>>> 11ef994... [1/2] base: HeadsUp snooze function
          * @hide
          */
         public static final String PA_PIE_JUICE = "pa_pie_juice";
@@ -5878,6 +5894,12 @@ public final class Settings {
         public static final String WALLPAPER_KEYGUARD_WALLPAPER_TINT = "wallpaper_keyguard_wallpaper_tint";
 
         /**
+         * Defines the global heads up notification snooze
+         * @hide
+         */
+        public static final String HEADS_UP_NOTIFICATION_SNOOZE = "heads_up_notification_snooze";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
@@ -6063,6 +6085,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(QS_ROWS_LANDSCAPE);
             PRIVATE_SETTINGS.add(QS_COLUMNS_PORTRAIT);
             PRIVATE_SETTINGS.add(QS_COLUMNS_LANDSCAPE);
+			PRIVATE_SETTINGS.add(HEADS_UP_NOTIFICATION_SNOOZE);
         }
 
         /**
