@@ -25,5 +25,8 @@
     <!-- App permission tint -->
     <color name="app_permission_icon_tint">@android:color/black</color>
 
+   <!-- Dynamic Navbar -->
+    <color name="input_method_navigation_guard_dynamic">@android:color/transparent</color>
+
 </resources>
 
