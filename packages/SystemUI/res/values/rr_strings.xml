@@ -267,4 +267,7 @@
     <!-- QS Mini mode -->
     <string name="qs_show_mini">Mini mode</string>
     <string name="qs_header">Header</string>
+    
+    <!-- High Brightness Mode Tile -->
+    <string name="quick_settings_high_brightness">High brightness</string>
 </resources>
