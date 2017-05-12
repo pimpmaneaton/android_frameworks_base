@@ -5680,6 +5680,12 @@ public final class Settings {
          * @hide
          */
         public static final String QS_PANEL_BG_ALPHA = "qs_panel_bg_alpha";
+        
+        /**
+         * Whether to show the weather wind speed in km/h or m/s
+         * @hide
+         */
+        public static final String OMNIJAWS_WINDSPEED_M_S = "omnijaws_windspeed_m_s";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
