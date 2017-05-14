@@ -154,6 +154,9 @@ public class OmniJawsClient {
             mContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(
                     Settings.System.OMNIJAWS_WINDSPEED_M_S),
                     false, this, UserHandle.USER_ALL);
+            mContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.OMNIJAWS_WINDDIRECTION_DISPLAY),
+                    false, this, UserHandle.USER_ALL);
             update();
         }
 
@@ -179,6 +182,7 @@ public class OmniJawsClient {
     private String mSettingIconPackage;
     private boolean mMetric;
     private boolean mWindSpeedMPS;
+    private boolean mWindDirectionPinWheel;
     private List<OmniJawsObserver> mObserver;
     private WeatherUpdateReceiver mReceiver;
     private OmniJawsSettingsObserver mSettingsObserver;
@@ -256,7 +260,7 @@ public class OmniJawsClient {
                         if (i == 0) {
                             mCachedInfo.city = c.getString(0);
                             mCachedInfo.windSpeed = getFormattedValue(c.getFloat(1) * (float)(mWindSpeedMPS ? 1./3.6 : 1));
-                            mCachedInfo.windDirection = String.valueOf(c.getInt(2)) + "\u00b0";
+                            mCachedInfo.windDirection = mWindDirectionPinWheel ? c.getString(13) : String.valueOf(c.getInt(2)) + "\u00b0";
                             mCachedInfo.conditionCode = c.getInt(3);
                             mCachedInfo.temp = getFormattedValue(c.getFloat(4));
                             mCachedInfo.humidity = c.getString(5);
@@ -429,6 +433,8 @@ public class OmniJawsClient {
             }
             mWindSpeedMPS = Settings.System.getInt(mContext.getContentResolver(),
                  Settings.System.OMNIJAWS_WINDSPEED_M_S, 0) == 1;
+            mWindDirectionPinWheel = Settings.System.getInt(mContext.getContentResolver(),
+                 Settings.System.OMNIJAWS_WINDDIRECTION_DISPLAY, 0) == 1;
         }
     }
 
