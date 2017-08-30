@@ -5713,11 +5713,10 @@ public final class Settings {
         public static final String QSFOOTER_SHOW_SETTINGS = "qs_footer_show_settings";
 
         /**
-         * Show Running Services icon in QS Footer.
-         *
+         * Whether to enable OmniSwitch as recents implementation.
          * @hide
          */
-        public static final String QSFOOTER_SHOW_SERVICES = "qs_footer_show_services";
+        public static final String RECENTS_OMNI_SWITCH_ENABLED = "recents_omni_switch";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
@@ -5905,6 +5904,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(QS_ROWS_LANDSCAPE);
             PRIVATE_SETTINGS.add(QS_COLUMNS_PORTRAIT);
             PRIVATE_SETTINGS.add(QS_COLUMNS_LANDSCAPE);
+            PRIVATE_SETTINGS.add(RECENTS_OMNI_SWITCH_ENABLED);
         }
 
         /**
