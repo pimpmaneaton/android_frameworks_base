@@ -5790,6 +5790,42 @@ public final class Settings {
         public static final String CHOOSER_ACTIVITY_BLACKLIST = "chooser_activity_blacklist";
 
         /**
+         * Wether to show the color picker help screen
+         * @hide
+         */
+        public static final String COLOR_PICKER_SHOW_HELP_SCREEN = "color_picker_show_help_screen";
+
+        /**
+         * Wether to show the color picker favorites
+         * @hide
+         */
+        public static final String COLOR_PICKER_SHOW_FAVORITES = "color_picker_show_favorites";
+
+        /**
+         * Color of the color picker favorite 1
+         * @hide
+         */
+        public static final String COLOR_PICKER_FAVORITE_1 = "color_picker_favorite_1";
+
+        /**
+         * Color of the color picker favorite 2
+         * @hide
+         */
+        public static final String COLOR_PICKER_FAVORITE_2 = "color_picker_favorite_2";
+
+        /**
+         * Color of the color picker favorite 3
+         * @hide
+         */
+        public static final String COLOR_PICKER_FAVORITE_3 = "color_picker_favorite_3";
+
+        /**
+         * Color of the color picker favorite 4
+         * @hide
+         */
+        public static final String COLOR_PICKER_FAVORITES_4 = "color_picker_favorite_4";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
