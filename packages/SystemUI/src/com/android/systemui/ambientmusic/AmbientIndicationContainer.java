@@ -1,6 +1,7 @@
 package com.android.systemui.ambientmusic;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.media.MediaMetadata;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -13,12 +14,12 @@ import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.systemui.R;
-import com.android.systemui.ambientmusic.AmbientIndicationInflateListener;
 import com.android.systemui.AutoReinflateContainer;
-import com.android.systemui.doze.DozeLog;
 import com.android.systemui.doze.DozeReceiver;
+import com.android.systemui.R;
 import com.android.systemui.statusbar.phone.StatusBar;
+
+import com.android.systemui.ambientmusic.AmbientIndicationInflateListener;
 
 import java.util.concurrent.TimeUnit;
 
@@ -42,7 +43,7 @@ public class AmbientIndicationContainer extends AutoReinflateContainer implement
     }
 
     public void hideIndication() {
-        setIndication(null);
+        showIndication(null);
     }
 
     public void initializeView(StatusBar statusBar, Handler handler) {
@@ -85,9 +86,8 @@ public class AmbientIndicationContainer extends AutoReinflateContainer implement
         }
     }
 
-    public void setCleanLayout(int reason) {
-        mForcedMediaDoze =
-                reason == DozeLog.PULSE_REASON_FORCED_MEDIA_NOTIFICATION;
+    public void setCleanLayout(boolean force) {
+        mForcedMediaDoze = force;
         updatePosition();
     }
 
@@ -97,7 +97,7 @@ public class AmbientIndicationContainer extends AutoReinflateContainer implement
         this.setLayoutParams(lp);
     }
 
-    public void setIndication(MediaMetadata mediaMetaData) {
+    public void showIndication(MediaMetadata mediaMetaData) {
         CharSequence charSequence = null;
         CharSequence lenghtInfo = null;
         if (mediaMetaData != null) {
@@ -118,22 +118,24 @@ public class AmbientIndicationContainer extends AutoReinflateContainer implement
                 }
             }
         }
-        if (mScrollingInfo) {
-            // if we are already showing an Ambient Notification with track info,
-            // stop the current scrolling and start it delayed again for the next song
+        if (charSequence != null) {
             setTickerMarquee(true);
         }
         mText.setText(charSequence);
         mTrackLenght.setText(lenghtInfo);
         mMediaMetaData = mediaMetaData;
-        boolean infoAvaillable = !TextUtils.isEmpty(charSequence);
-        if (!infoAvaillable) {
+        boolean infoAvaillable = TextUtils.isEmpty(charSequence);
+        if (infoAvaillable) {
             mAmbientIndication.setVisibility(View.INVISIBLE);
         } else {
             mAmbientIndication.setVisibility(View.VISIBLE);
-            if (mStatusBar != null) {
-                mStatusBar.triggerAmbientForMedia();
-            }
+        }
+    }
+
+    public void setIndication(MediaMetadata mediaMetaData) {
+        showIndication(mediaMetaData);
+        if (mStatusBar != null) {
+            mStatusBar.triggerAmbientForMedia();
         }
     }
 }
