@@ -4770,13 +4770,20 @@ public final class Settings {
         /**
          * @hide
          */
-        public static final String STATUSBAR_BATTERY_BAR_BLEND_COLORS = "statusbar_battery_bar_blend_color";
+        public static final String STATUSBAR_BATTERY_BAR_USE_GRADIENT_COLOR =
+                "statusbar_battery_bar_use_gradient_color";
 
         /**
          * @hide
          */
-        public static final String STATUSBAR_BATTERY_BAR_BLEND_COLORS_REVERSE =
-                "statusbar_battery_bar_blend_color_reverse";
+        public static final String STATUSBAR_BATTERY_BAR_HIGH_COLOR =
+                "statusbar_battery_bar_high_color";
+
+        /**
+         * @hide
+         */
+        public static final String STATUSBAR_BATTERY_BAR_LOW_COLOR =
+                "statusbar_battery_bar_low_color";
 
         /**
           * show the membar in recents
