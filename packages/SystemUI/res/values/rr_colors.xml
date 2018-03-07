@@ -71,4 +71,7 @@
     <color name="screen_pinning_positive_text_color">@android:color/white</color>
     <color name="screen_pinning_negative_text_color">@android:color/white</color>
 
+    <!-- Recents -->
+    <color name="legacy_icon_background">#FFFFFF</color>
+
 </resources>
