@@ -7084,7 +7084,6 @@ public class StatusBar extends SystemUI implements DemoMode,
                 UserHandle.USER_CURRENT) == 1;
     }
 
-<<<<<<< HEAD
     private void updateBlurSettings() {
             ContentResolver resolver = mContext.getContentResolver();
             mBlurScale = Settings.System.getInt(mContext.getContentResolver(),
@@ -7186,11 +7185,16 @@ public class StatusBar extends SystemUI implements DemoMode,
     }
 
     private void updateRecentsIconPack() {
-        String currentIconPack = Settings.System.getStringForUser(mContext.getContentResolver(),
-            Settings.System.RECENTS_ICON_PACK, mCurrentUserId);
-        IconsHandler.getInstance(mContext).updatePrefs(currentIconPack);
-        mRecents.resetIconCache();
+        boolean slimRecents = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.USE_SLIM_RECENTS, 0, mCurrentUserId) == 1;
+        if (!slimRecents) {
+            String currentIconPack = Settings.System.getStringForUser(mContext.getContentResolver(),
+                Settings.System.RECENTS_ICON_PACK, mCurrentUserId);
+            mRecents.resetIconCache();
+            mRecents.getIconsHandler().updatePrefs(currentIconPack);
+        }
     }
+
 
     private void updateTickerAnimation() {
         mTickerAnimationMode = Settings.System.getIntForUser(mContext.getContentResolver(),
@@ -9152,7 +9156,6 @@ public class StatusBar extends SystemUI implements DemoMode,
             mBackgroundDimmed.postInvalidate();
         }
 
-        IconsHandler.getInstance(mContext).resetIconNormalizer();
         updateRecentsIconPack();
     }
 
