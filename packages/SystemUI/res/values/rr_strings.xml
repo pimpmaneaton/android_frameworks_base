@@ -238,4 +238,7 @@
    <!-- Recents free RAM -->
    <string name="recents_free_ram">Free RAM: %1$d MB</string>
 
+    <!-- The contents of the Ambient Weather bottom view -->
+    <string name="ambient_weather_info">%1$s &amp; %2$s</string>
+
 </resources>
