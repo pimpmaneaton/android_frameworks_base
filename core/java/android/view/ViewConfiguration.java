@@ -242,6 +242,7 @@ public class ViewConfiguration {
     
     /**
      * Max distance in dips to overscroll for edge effects
+     * @hide
      */
     public static final int DEFAULT_OVERSCROLL_DISTANCE = 0;
 
@@ -252,6 +253,7 @@ public class ViewConfiguration {
 
     /**
      * Max distance in dips to overfling for edge effects
+     * @hide
      */
     public static final int DEFAULT_OVERFLING_DISTANCE = 6;
 

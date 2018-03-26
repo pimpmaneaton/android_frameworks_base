@@ -3979,29 +3979,41 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_EXPANDED_ENABLED_PREFERENCE_KEY = "blurred_status_bar_expanded_enabled_pref";
-   
+
+        /** @hide */ 
         public static final String BLUR_SCALE_PREFERENCE_KEY = "blurred_expanded_panel_scale_pref";
-   
+
+        /** @hide */
         public static final String BLUR_RADIUS_PREFERENCE_KEY = "blurred_expanded_panel_radius_pref";
-  
+
+        /** @hide */  
         public static final String TRANSLUCENT_NOTIFICATIONS_PRECENTAGE_PREFERENCE_KEY = "translucent_notifications_percentage_pref";
 
+        /** @hide */
         public static final String TRANSLUCENT_QUICK_SETTINGS_PRECENTAGE_PREFERENCE_KEY = "translucent_quick_settings_percentage_pref";
-   
+
+        /** @hide */   
         public static final String TRANSLUCENT_QUICK_SETTINGS_PREFERENCE_KEY = "translucent_quick_settings_pref";
-   
+
+        /** @hide */   
         public static final String TRANSLUCENT_NOTIFICATIONS_PREFERENCE_KEY = "translucent_notifications_pref";
 
+        /** @hide */
         public static final String RECENT_APPS_ENABLED_PREFERENCE_KEY = "blurred_recent_app_enabled_pref";
 
+        /** @hide */
         public static final String RECENT_APPS_SCALE_PREFERENCE_KEY = "blurred_recent_app_scale_pref";
 
+        /** @hide */
         public static final String RECENT_APPS_RADIUS_PREFERENCE_KEY = "blurred_recent_app_radius_pref";
 
+        /** @hide */
         public static final String BLUR_DARK_COLOR_PREFERENCE_KEY = "blur_dark_color_pref";
 
+        /** @hide */
         public static final String BLUR_LIGHT_COLOR_PREFERENCE_KEY = "blur_light_color_pref";
 
+        /** @hide */
         public static final String BLUR_MIXED_COLOR_PREFERENCE_KEY = "blur_mixed_color_pref";
 
         /**
@@ -5023,6 +5035,8 @@ public final class Settings {
                 "wallpaper_intra_open",
                 "wallpaper_intra_close",
         };
+
+        /** @hide */
         public static final String ANIMATION_CONTROLS_DURATION = "animation_controls_duration";
 
         /**
@@ -5393,6 +5407,7 @@ public final class Settings {
          * 1 = Statusbar only
          * 2 = Navbar only
          * 3 = Fullscreen
+         * @hide
          */
         public static final String IMMERSIVE_RECENTS = "immersive_recents";
 
@@ -5585,6 +5600,7 @@ public final class Settings {
          * Ticker animation
          * 0: Fade animation
          * 1: Scrolling ticker
+         * @hide
          */
         public static final String STATUS_BAR_TICKER_ANIMATION_MODE =
                 "status_bar_ticker_animation_mode";
