@@ -370,6 +370,9 @@ public class KeyguardStatusView extends GridLayout implements
         View weatherPanel = findViewById(R.id.weather_panel);
         TextView noWeatherInfo = (TextView) findViewById(R.id.no_weather_info_text);
 
+        int defaultIconColor =
+                res.getColor(R.color.keyguard_default_icon_color);
+
         AlarmManager.AlarmClockInfo nextAlarm =
                 mAlarmManager.getNextAlarmClock(UserHandle.USER_CURRENT);
         boolean showAlarm = Settings.System.getIntForUser(resolver,
