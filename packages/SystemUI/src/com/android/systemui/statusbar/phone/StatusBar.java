@@ -6953,7 +6953,6 @@ public class StatusBar extends SystemUI implements DemoMode,
                     Settings.System.RECENTS_ICON_PACK))) {
                 updateRecentsIconPack();
             } else if (uri.equals(Settings.Secure.getUriFor(
-<<<<<<< HEAD
                     Settings.Secure.STATUS_BAR_BATTERY_SAVER_COLOR))) {
                 mBatterySaverColor = Settings.Secure.getIntForUser(
                         mContext.getContentResolver(),
