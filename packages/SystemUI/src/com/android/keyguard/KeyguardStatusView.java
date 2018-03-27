@@ -29,6 +29,9 @@ import android.graphics.PorterDuff;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.PowerManager;
+import android.graphics.Typeface;
+import android.graphics.Bitmap;
+import android.graphics.PorterDuff.Mode;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.UserHandle;
@@ -342,10 +345,9 @@ public class KeyguardStatusView extends GridLayout implements
                     updateSettings(false);
                 } else {
                     mWeatherCity.setText(null);
-                    mWeatherConditionImage.setImageDrawable(mContext
-                        .getResources().getDrawable(R.drawable.keyguard_weather_default_off));
+                    mWeatherConditionImage.setImageDrawable(null);
                     mWeatherCurrentTemp.setText(null);
-                    mWeatherConditionText.setText(null);
+                    mWeatherConditionText.setText(mContext.getResources().getString(R.string.weather_info_not_available));
                     updateSettings(true);
                 }
        } catch(Exception e) {
@@ -364,8 +366,6 @@ public class KeyguardStatusView extends GridLayout implements
         View weatherPanel = findViewById(R.id.weather_panel);
         TextView noWeatherInfo = (TextView) findViewById(R.id.no_weather_info_text);
 
-        int defaultIconColor =
-                res.getColor(R.color.keyguard_default_icon_color);
 
         AlarmManager.AlarmClockInfo nextAlarm =
                 mAlarmManager.getNextAlarmClock(UserHandle.USER_CURRENT);
