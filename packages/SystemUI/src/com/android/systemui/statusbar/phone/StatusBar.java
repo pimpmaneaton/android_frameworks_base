@@ -7176,6 +7176,7 @@ public class StatusBar extends SystemUI implements DemoMode,
                 mSlimRecents = null;
             }
         }
+        updateRecentsIconPack();
     }
 
     private void rebuildRecentsScreen() {
@@ -9155,8 +9156,6 @@ public class StatusBar extends SystemUI implements DemoMode,
             mBackgroundNormal.postInvalidate();
             mBackgroundDimmed.postInvalidate();
         }
-
-        updateRecentsIconPack();
     }
 
     public static Object getObjectField(Object obj, String fieldName) {
