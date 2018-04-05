@@ -2144,8 +2144,12 @@ public class StatusBar extends SystemUI implements DemoMode,
                 mNavigationBar.setPulseColors(n.isColorizedMedia(), colors);
             }
             if (mSlimRecents != null) {
-                mSlimRecents.setMediaColors(n.isColorizedMedia(), colors,
-                        n.getOriginalLargeIcon().loadDrawable(mContext));
+                Icon icon = n.getOriginalLargeIcon();
+                Drawable drawable = null;
+                if (icon != null) {
+                    drawable = icon.loadDrawable(mContext);
+                }
+                mSlimRecents.setMediaColors(n.isColorizedMedia(), colors, drawable);
             }
         }
     }
