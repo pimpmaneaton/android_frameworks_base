@@ -4477,7 +4477,13 @@ public final class Settings {
          */
         public static final String DOT_COLOR_SWITCH = "dot_color_switch";
 
- 	    /**
+ 	/**
+         * show recents in grid style
+         * @hide
+         */
+        public static final String RECENTS_GRID = "recents_grid";
+
+ 	/**
          * show clear all recents button
          * @hide
          */
