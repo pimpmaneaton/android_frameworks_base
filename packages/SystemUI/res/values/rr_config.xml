@@ -40,8 +40,4 @@
 
     <item name="qs_background_opacity" format="float" type="integer">0.87</item>
 
-    <!-- Burn in protection -->
-    <bool name="config_statusBarBurnInProtection">false</bool>
-    <integer name="config_shift_interval">60</integer>
-
 </resources>
