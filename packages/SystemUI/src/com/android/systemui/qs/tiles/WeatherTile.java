@@ -30,6 +30,7 @@ import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.graphics.drawable.VectorDrawable;
 import android.provider.Settings;
 import android.service.quicksettings.Tile;
 import android.util.Log;
@@ -230,6 +231,9 @@ public class WeatherTile extends QSTileImpl<BooleanState> implements OmniJawsCli
                 mWeatherData = mWeatherClient.getWeatherInfo();
                 if (mWeatherData != null) {
                     mWeatherImage = mWeatherClient.getWeatherConditionImage(mWeatherData.conditionCode);
+                    if (mWeatherImage instanceof VectorDrawable) {
+                        mWeatherImage = applyTint(mWeatherImage);
+                    }
                     mWeatherLabel = mWeatherData.temp + mWeatherData.tempUnits;
                 } else {
                     mWeatherLabel = mContext.getResources().getString(R.string.omnijaws_service_unkown);
@@ -244,6 +248,15 @@ public class WeatherTile extends QSTileImpl<BooleanState> implements OmniJawsCli
         if (isShowingDetail()) {
             mDetailedView.updateWeatherData(mWeatherData);
         }
+    }
+
+    private Drawable applyTint(Drawable icon) {
+        TypedArray array =
+                mContext.obtainStyledAttributes(new int[]{android.R.attr.statusBarColor});
+        icon = icon.mutate();
+        icon.setTint(array.getColor(0, 0));
+        array.recycle();
+        return icon;
     }
 
     @Override
