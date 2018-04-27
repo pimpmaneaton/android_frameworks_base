@@ -728,7 +728,6 @@ public class StatusBar extends SystemUI implements DemoMode,
     private VisualizerView mVisualizerView;
     private boolean mScreenOn;
     private boolean mKeyguardShowingMedia;
-    private boolean mShowMediaMetadata;
 
     private MediaSessionManager mMediaSessionManager;
     private MediaController mMediaController;
@@ -9085,9 +9084,6 @@ public class StatusBar extends SystemUI implements DemoMode,
                 break;
             case STATUS_BAR_BRIGHTNESS_CONTROL:
                 mBrightnessControl = newValue != null && Integer.parseInt(newValue) == 1;
-                break;
-            case LOCKSCREEN_MEDIA_METADATA:
-                mShowMediaMetadata = newValue == null || Integer.parseInt(newValue) == 1;
                 break;
             case NAVBAR_DYNAMIC:
                 if (mNavigationBar != null && mNavigationBarView != null) {
