@@ -5726,12 +5726,6 @@ public final class Settings {
          */
         public static final String QSFOOTER_SHOW_SETTINGS = "qs_footer_show_settings";
 
-         /**
-         * Show Running Services icon in QS Footer.
-          * @hide
-          */
-        public static final String QSFOOTER_SHOW_SERVICES = "qs_footer_show_services";
-
         /**
          * Whether to enable OmniSwitch as recents implementation.
          * @hide
