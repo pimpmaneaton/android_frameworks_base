@@ -17,7 +17,6 @@ import com.android.systemui.R;
 import com.android.systemui.ambientmusic.AmbientIndicationInflateListener;
 import com.android.systemui.AutoReinflateContainer;
 import com.android.systemui.doze.DozeLog;
-import com.android.systemui.doze.DozeReceiver;
 import com.android.systemui.statusbar.phone.StatusBar;
 
 import java.util.concurrent.TimeUnit;
@@ -127,9 +126,7 @@ public class AmbientIndicationContainer extends AutoReinflateContainer {
                 }
             }
         }
-        if (mPulsing) {
-            // if we are already showing an Ambient Notification with track info,
-            // stop the current scrolling and start it delayed again for the next song
+        if (charSequence != null) {
             setTickerMarquee(true);
         }
 

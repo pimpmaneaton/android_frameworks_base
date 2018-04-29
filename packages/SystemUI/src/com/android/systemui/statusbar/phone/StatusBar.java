@@ -761,6 +761,9 @@ public class StatusBar extends SystemUI implements DemoMode,
         @Override
         public void onSessionDestroyed() {
             super.onSessionDestroyed();
+            if (mTicker != null) {
+                mTicker.resetShownMediaMetadata();
+            }
             setMediaPlaying();
         }
     };
@@ -793,9 +796,6 @@ public class StatusBar extends SystemUI implements DemoMode,
             mNoMan.setMediaPlaying(false);
             if (mNavigationBar != null) {
                 mNavigationBar.setMediaPlaying(false);
-            }
-            if (mTicker != null) {
-                mTicker.resetShownMediaMetadata();
             }
             if (mSlimRecents != null) {
                 mSlimRecents.setMediaPlaying(false, "");
@@ -2794,6 +2794,9 @@ public class StatusBar extends SystemUI implements DemoMode,
                 mMediaController = controller;
                 mMediaController.registerCallback(mMediaListener);
                 mMediaMetadata = mMediaController.getMetadata();
+                if (mTicker != null) {
+                    mTicker.resetShownMediaMetadata();
+                }
                 setMediaPlaying();
                 if (DEBUG_MEDIA) {
                     Log.v(TAG, "DEBUG_MEDIA: insert listener, receive metadata: "
@@ -6291,7 +6294,6 @@ public class StatusBar extends SystemUI implements DemoMode,
             // Don't allow apps to trigger this from keyguard.
             return;
         }
-        hideRecentApps(false, false);
         // Show screen pinning request, since this comes from an app, show 'no thanks', button.
         showScreenPinningRequest(taskId, true);
     }
