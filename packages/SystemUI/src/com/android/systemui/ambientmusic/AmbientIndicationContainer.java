@@ -126,7 +126,9 @@ public class AmbientIndicationContainer extends AutoReinflateContainer {
                 }
             }
         }
-        if (charSequence != null) {
+        if (mPulsing) {
+            // if we are already showing an Ambient Notification with track info,
+            // stop the current scrolling and start it delayed again for the next song
             setTickerMarquee(true);
         }
 
