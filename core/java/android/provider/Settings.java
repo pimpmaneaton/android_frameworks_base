@@ -4647,6 +4647,11 @@ public final class Settings {
         public static final String QS_QUICKBAR_SCROLL_ENABLED = "qs_quickbar_scroll_enabled";
 
         /**
+         * @hide
+         */
+        public static final String QS_SHOW_MINI = "qs_show_mini";
+
+        /**
         * Whether to show the battery info on the lockscreen while charging
         * @hide
         */
