@@ -357,6 +357,7 @@ public class KeyguardIndicationController implements
                             CharSequence weatherIndicator = String.format(mContext.getResources().getString(R.string.ambient_weather_info),
                                   mWeatherCurrentTemp, mWeatherConditionText);
                             mTextView.switchIndication(weatherIndicator);
+							mTextView.setTextColor(Color.WHITE);
                         }
                     } else {
                         mTextView.switchIndication(null);
