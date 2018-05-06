@@ -61,6 +61,7 @@ import android.widget.TextView;
 import com.android.internal.util.ArrayUtils;
 import com.android.internal.widget.LockPatternUtils;
 //import com.android.systemui.ChargingView;
+import com.android.systemui.doze.DozeLog;
 import com.android.systemui.omni.OmniJawsClient;
 import com.android.systemui.statusbar.policy.DateView;
 
@@ -517,8 +518,9 @@ public class KeyguardStatusView extends GridLayout implements
         mPulsing = pulsing;
     }
 
-    public void setCleanLayout(boolean force) {
-        mForcedMediaDoze = force;
+    public void setCleanLayout(int reason) {
+        mForcedMediaDoze =
+                reason == DozeLog.PULSE_REASON_FORCED_MEDIA_NOTIFICATION;
         updateDozeVisibleViews();
         refresh();
     }
