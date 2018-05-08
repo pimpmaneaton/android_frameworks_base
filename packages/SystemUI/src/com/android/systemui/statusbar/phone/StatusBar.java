@@ -7222,20 +7222,9 @@ public class StatusBar extends SystemUI implements DemoMode,
         }
     }
 
-<<<<<<< HEAD
     private void setQsPanelOptions() {
         if (mQSPanel != null) {
             mQSPanel.updateSettings();
-=======
-    private void updateRecentsIconPack() {
-        boolean slimRecents = Settings.System.getIntForUser(mContext.getContentResolver(),
-                Settings.System.USE_SLIM_RECENTS, 0, mCurrentUserId) == 1;
-        if (!slimRecents) {
-            String currentIconPack = Settings.System.getStringForUser(mContext.getContentResolver(),
-                Settings.System.RECENTS_ICON_PACK, mCurrentUserId);
-            mRecents.resetIconCache();
-            mRecents.setCurrentIconPack(currentIconPack);
->>>>>>> ebc9471... Stock Recents icon pack code fixes
         }
     }
 
@@ -7272,7 +7261,7 @@ public class StatusBar extends SystemUI implements DemoMode,
             String currentIconPack = Settings.System.getStringForUser(mContext.getContentResolver(),
                 Settings.System.RECENTS_ICON_PACK, mCurrentUserId);
             mRecents.resetIconCache();
-            mRecents.getIconsHandler().updatePrefs(currentIconPack);
+            mRecents.setCurrentIconPack(currentIconPack);
         }
     }
 
