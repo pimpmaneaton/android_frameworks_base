@@ -1,6 +1,10 @@
 /*
  * Copyright (C) 2017 The Android Open Source Project
+<<<<<<< HEAD
  * Copyright (C) 2017 The LineageOS Project
+=======
+ * Copyright (C) 2017-2018 The LineageOS Project
+>>>>>>> e0cb8b7... base: add reading mode tile
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use mHost file
  * except in compliance with the License. You may obtain a copy of the License at
@@ -56,6 +60,7 @@ import com.android.systemui.qs.tiles.NightDisplayTile;
 import com.android.systemui.qs.tiles.RebootTile;
 import com.android.systemui.qs.tiles.PictureInPictureTile;
 import com.android.systemui.qs.tiles.PieTile;
+import com.android.systemui.qs.tiles.ReadingModeTile;
 import com.android.systemui.qs.tiles.RotationLockTile;
 import com.android.systemui.qs.tiles.ScreenrecordTile;
 import com.android.systemui.qs.tiles.SyncTile;
@@ -116,6 +121,7 @@ public class QSFactoryImpl implements QSFactory {
         else if (tileSpec.equals("sound")) return new SoundTile(mHost);
         else if (tileSpec.equals("soundsearch")) return new SoundSearchTile(mHost);
         else if (tileSpec.equals("pip")) return new PictureInPictureTile(mHost);
+        else if (tileSpec.equals("reading_mode")) return new ReadingModeTile(mHost);
         else if (tileSpec.equals("screenrecord")) return new ScreenrecordTile(mHost);
         else if (tileSpec.equals("weather")) return new WeatherTile(mHost);
         else if (tileSpec.equals("pie")) return new PieTile(mHost);
