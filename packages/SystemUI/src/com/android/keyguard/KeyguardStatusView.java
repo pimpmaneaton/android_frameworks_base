@@ -64,6 +64,7 @@ import android.widget.TextView;
 
 import com.android.internal.util.ArrayUtils;
 import com.android.internal.widget.LockPatternUtils;
+import com.android.settingslib.Utils;
 //import com.android.systemui.ChargingView;
 import com.android.systemui.doze.DozeLog;
 import com.android.systemui.omni.OmniJawsClient;
@@ -119,18 +120,17 @@ public class KeyguardStatusView extends GridLayout implements
     private boolean mShowWeather;
     private boolean mShowConditionIcon;
     private boolean mShowLocation;
+    private boolean mShowAlarm;
+    private boolean mAvailableAlarm;
+    private boolean mShowClock;
+    private boolean mShowDate;
+    private int mClockSelection;
+    private int mDateSelection;
     private int mIconNameValue = -1;
 
     private boolean mForcedMediaDoze;
 
     private SettingsObserver mSettingsObserver;
-
-    private boolean mShowAlarm;
-    private boolean mShowClock;
-    private boolean mShowDate;
-
-    private int mClockSelection;
-    private int mDateSelection;
 
     private KeyguardUpdateMonitorCallback mInfoCallback = new KeyguardUpdateMonitorCallback() {
 
@@ -234,6 +234,10 @@ public class KeyguardStatusView extends GridLayout implements
         mWeatherConditionImage = (ImageView) findViewById(R.id.weather_image);
         mWeatherCurrentTemp = (TextView) findViewById(R.id.current_temp);
         mWeatherConditionText = (TextView) findViewById(R.id.condition);
+        mAnalogClockView = (CustomAnalogClock) findViewById(R.id.analog_clock_view);
+        mDeadPoolClockView = (DeadPoolAnalogClock) findViewById(R.id.deadpool_clock_view);
+
+        updateSettings(false);
 
         boolean shouldMarquee = KeyguardUpdateMonitor.getInstance(mContext).isDeviceInteractive();
         setEnableMarquee(shouldMarquee);
@@ -304,11 +308,10 @@ public class KeyguardStatusView extends GridLayout implements
     private void refresh() {
         AlarmManager.AlarmClockInfo nextAlarm =
                 mAlarmManager.getNextAlarmClock(UserHandle.USER_CURRENT);
-        Patterns.update(mContext, nextAlarm != null);
+        Patterns.update(mContext, nextAlarm != null && mShowAlarm);
 
         refreshTime();
         refreshAlarmStatus(nextAlarm);
-        updateSettings(false);
     }
 
     void refreshAlarmStatus(AlarmManager.AlarmClockInfo nextAlarm) {
@@ -317,10 +320,11 @@ public class KeyguardStatusView extends GridLayout implements
             mAlarmStatusView.setText(alarm);
             mAlarmStatusView.setContentDescription(
                     getResources().getString(R.string.keyguard_accessibility_next_alarm, alarm));
-            mAlarmStatusView.setVisibility(!isDozeMode() ? (mShowAlarm ? View.VISIBLE : View.GONE) : View.VISIBLE);
+            mAvailableAlarm = true;
         } else {
-            mAlarmStatusView.setVisibility(View.GONE);
+            mAvailableAlarm = false;
         }
+        mAlarmStatusView.setVisibility(mShowAlarm && mAvailableAlarm ? View.VISIBLE : View.GONE);
     }
 
     public int getClockBottom() {
@@ -361,7 +365,6 @@ public class KeyguardStatusView extends GridLayout implements
         mWeatherClient.addObserver(this);
         mSettingsObserver.observe();
         queryAndUpdateWeather();
-        updateSettings(false);
     }
 
     @Override
@@ -423,8 +426,75 @@ public class KeyguardStatusView extends GridLayout implements
     }
 
     private void updateSettings(boolean forceHide) {
-        final ContentResolver resolver = getContext().getContentResolver();
-        final Resources res = getContext().getResources();
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mKeyguardStatusArea.getLayoutParams();
+        RelativeLayout.LayoutParams paramsWeather = (RelativeLayout.LayoutParams) mWeatherView.getLayoutParams();
+        switch (mClockSelection) {
+            case 0: // default digital
+            default:
+                params.addRule(RelativeLayout.BELOW, R.id.clock_view);
+                paramsWeather.addRule(RelativeLayout.BELOW, R.id.clock_view);
+                mClockView.setSingleLine(true);
+                mAnalogClockView.unregisterReceiver();
+                mDeadPoolClockView.unregisterReceiver();
+                break;
+            case 1: // digital (bold)
+                params.addRule(RelativeLayout.BELOW, R.id.clock_view);
+                paramsWeather.addRule(RelativeLayout.BELOW, R.id.clock_view);
+                mClockView.setSingleLine(true);
+                mAnalogClockView.unregisterReceiver();
+                mDeadPoolClockView.unregisterReceiver();
+                break;
+            case 2: // analog
+                params.addRule(RelativeLayout.BELOW, R.id.analog_clock_view);
+                paramsWeather.addRule(RelativeLayout.BELOW, R.id.analog_clock_view);
+                mAnalogClockView.registerReceiver();
+                mDeadPoolClockView.unregisterReceiver();
+                break;
+            case 3: // analog (deadpool)
+                params.addRule(RelativeLayout.BELOW, R.id.deadpool_clock_view);
+                paramsWeather.addRule(RelativeLayout.BELOW, R.id.deadpool_clock_view);
+                mAnalogClockView.unregisterReceiver();
+                mDeadPoolClockView.registerReceiver();
+                break;
+            case 4: // sammy
+                params.addRule(RelativeLayout.BELOW, R.id.clock_view);
+                paramsWeather.addRule(RelativeLayout.BELOW, R.id.clock_view);
+                mClockView.setSingleLine(false);
+                mAnalogClockView.unregisterReceiver();
+                mDeadPoolClockView.unregisterReceiver();
+                break;
+            case 5: // sammy (bold)
+                params.addRule(RelativeLayout.BELOW, R.id.clock_view);
+                paramsWeather.addRule(RelativeLayout.BELOW, R.id.clock_view);
+                mClockView.setSingleLine(false);
+                mAnalogClockView.unregisterReceiver();
+                mDeadPoolClockView.unregisterReceiver();
+                break;
+        }
+
+        switch (mDateSelection) {
+            case 0: // default
+            default:
+                mDateView.setBackgroundResource(0);
+                mDateView.setTypeface(Typeface.DEFAULT);
+                mDateView.setPadding(0,0,0,0);
+                break;
+            case 1: // semi-transparent box
+                mDateView.setBackground(getResources().getDrawable(R.drawable.date_box_str_border));
+                mDateView.setTypeface(Typeface.DEFAULT_BOLD);
+                mDateView.setPadding(40,20,40,20);
+                break;
+            case 2: // semi-transparent box (round)
+                mDateView.setBackground(getResources().getDrawable(R.drawable.date_str_border));
+                mDateView.setTypeface(Typeface.DEFAULT_BOLD);
+                mDateView.setPadding(40,20,40,20);
+                break;
+        }
+        updateClockVisibilities(forceHide);
+        updateWeatherVisibilities(forceHide);
+    }
+
+    private void updateWeatherVisibilities(boolean forceHide) {
         View weatherPanel = findViewById(R.id.weather_panel);
         TextView noWeatherInfo = (TextView) findViewById(R.id.no_weather_info_text);
 
@@ -464,92 +534,54 @@ public class KeyguardStatusView extends GridLayout implements
                 mWeatherCity.setVisibility(View.GONE);
             }
         }
+    }
 
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mKeyguardStatusArea.getLayoutParams();
-        RelativeLayout.LayoutParams paramsWeather = (RelativeLayout.LayoutParams) mWeatherView.getLayoutParams();
+    private void updateClockVisibilities(boolean forceHide) {
         switch (mClockSelection) {
             case 0: // default digital
             default:
-                mClockView.setVisibility(!isDozeMode() ? (mShowClock ? View.VISIBLE : View.GONE) : View.VISIBLE);
+                mClockView.setVisibility(mShowClock ?
+                                (forceHide ? View.GONE : View.VISIBLE) : View.GONE);
                 mAnalogClockView.setVisibility(View.GONE);
                 mDeadPoolClockView.setVisibility(View.GONE);
-                params.addRule(RelativeLayout.BELOW, R.id.clock_view);
-                paramsWeather.addRule(RelativeLayout.BELOW, R.id.clock_view);
-                mClockView.setSingleLine(true);
                 break;
             case 1: // digital (bold)
-                mClockView.setVisibility(!isDozeMode() ? (mShowClock ? View.VISIBLE : View.GONE) : View.VISIBLE);
+                mClockView.setVisibility(mShowClock ?
+                                (forceHide ? View.GONE : View.VISIBLE) : View.GONE);
                 mAnalogClockView.setVisibility(View.GONE);
                 mDeadPoolClockView.setVisibility(View.GONE);
-                params.addRule(RelativeLayout.BELOW, R.id.clock_view);
-                paramsWeather.addRule(RelativeLayout.BELOW, R.id.clock_view);
-                mClockView.setSingleLine(true);
                 break;
             case 2: // analog
-                mAnalogClockView.setVisibility(!isDozeMode() ? (mShowClock ? View.VISIBLE : View.GONE) : View.VISIBLE);
+                mAnalogClockView.setVisibility(mShowClock ?
+                                (forceHide ? View.GONE : View.VISIBLE) : View.GONE);
                 mClockView.setVisibility(View.GONE);
                 mDeadPoolClockView.setVisibility(View.GONE);
-                params.addRule(RelativeLayout.BELOW, R.id.analog_clock_view);
-                paramsWeather.addRule(RelativeLayout.BELOW, R.id.analog_clock_view);
                 break;
             case 3: // analog (deadpool)
-                mDeadPoolClockView.setVisibility(!isDozeMode() ? (mShowClock ? View.VISIBLE : View.GONE) : View.VISIBLE);
+                mDeadPoolClockView.setVisibility(mShowClock ?
+                                (forceHide ? View.GONE : View.VISIBLE) : View.GONE);
                 mAnalogClockView.setVisibility(View.GONE);
                 mClockView.setVisibility(View.GONE);
-                params.addRule(RelativeLayout.BELOW, R.id.deadpool_clock_view);
-                paramsWeather.addRule(RelativeLayout.BELOW, R.id.deadpool_clock_view);
                 break;
             case 4: // sammy
-                mClockView.setVisibility(!isDozeMode() ? (mShowClock ? View.VISIBLE : View.GONE) : View.VISIBLE);
+                mClockView.setVisibility(mShowClock ?
+                                (forceHide ? View.GONE : View.VISIBLE) : View.GONE);
                 mAnalogClockView.setVisibility(View.GONE);
                 mDeadPoolClockView.setVisibility(View.GONE);
-                params.addRule(RelativeLayout.BELOW, R.id.clock_view);
-                paramsWeather.addRule(RelativeLayout.BELOW, R.id.clock_view);
-                mClockView.setSingleLine(false);
                 break;
             case 5: // sammy (bold)
-                mClockView.setVisibility(!isDozeMode() ? (mShowClock ? View.VISIBLE : View.GONE) : View.VISIBLE);
+                mClockView.setVisibility(mShowClock ?
+                                (forceHide ? View.GONE : View.VISIBLE) : View.GONE);
                 mAnalogClockView.setVisibility(View.GONE);
                 mDeadPoolClockView.setVisibility(View.GONE);
-                params.addRule(RelativeLayout.BELOW, R.id.clock_view);
-                paramsWeather.addRule(RelativeLayout.BELOW, R.id.clock_view);
-                mClockView.setSingleLine(false);
                 break;
         }
 
-        switch (mDateSelection) {
-            case 0: // default
-            default:
-                mDateView.setVisibility(!isDozeMode() ? (mShowDate ? View.VISIBLE : View.GONE) : View.VISIBLE);
-                mDateView.setBackgroundResource(0);
-                mDateView.setTypeface(Typeface.DEFAULT);
-                mDateView.setPadding(0,0,0,0);
-                break;
-            case 1: // semi-transparent box
-                mDateView.setVisibility(!isDozeMode() ? (mShowDate ? View.VISIBLE : View.GONE) : View.VISIBLE);
-                mDateView.setBackground(getResources().getDrawable(R.drawable.date_box_str_border));
-                mDateView.setTypeface(Typeface.DEFAULT_BOLD);
-                mDateView.setPadding(40,20,40,20);
-                break;
-            case 2: // semi-transparent box (round)
-                mDateView.setVisibility(!isDozeMode() ? (mShowDate ? View.VISIBLE : View.GONE) : View.VISIBLE);
-                mDateView.setBackground(getResources().getDrawable(R.drawable.date_str_border));
-                mDateView.setTypeface(Typeface.DEFAULT_BOLD);
-                mDateView.setPadding(40,20,40,20);
-                break;
-        }
+        mDateView.setVisibility(mShowDate ?
+                        (forceHide ? View.GONE : View.VISIBLE) : View.GONE);
 
-        AlarmManager.AlarmClockInfo nextAlarm =
-                mAlarmManager.getNextAlarmClock(UserHandle.USER_CURRENT);
-
-        if (mAlarmStatusView != null) {
-            if (mShowAlarm && nextAlarm != null){
-                mAlarmStatusView.setVisibility(forceHide ?
-                    View.GONE : View.VISIBLE);
-            } else {
-                mAlarmStatusView.setVisibility(View.GONE);
-            }
-        }
+        mAlarmStatusView.setVisibility(mShowAlarm && mAvailableAlarm ?
+                        (forceHide ? View.GONE : View.VISIBLE) : View.GONE);
     }
 
     @Override
@@ -621,7 +653,7 @@ public class KeyguardStatusView extends GridLayout implements
         mAlarmStatusView.setCompoundDrawableTintList(ColorStateList.valueOf(blendedAlarmColor));
         mAnalogClockView.setDark(dark);
         mDeadPoolClockView.setDark(dark);
-        refresh();
+        updateClockVisibilities(false);
     }
 
     public void setPulsing(boolean pulsing) {
@@ -642,7 +674,6 @@ public class KeyguardStatusView extends GridLayout implements
                 child.setAlpha(mDarkAmount == 1 ? 0 : 1);
             }
         }
-        refreshTime();
     }
 
     class SettingsObserver extends ContentObserver {
@@ -720,24 +751,5 @@ public class KeyguardStatusView extends GridLayout implements
 
             updateSettings(false);
          }
-    }
-
-    private boolean isDozeMode() {
-        IDreamManager dreamManager = getDreamManager();
-        PowerManager pm = (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
-        try {
-            //noinspection deprecation
-            if (dreamManager != null && dreamManager.isDozing() && pm != null && !pm.isScreenOn()) {
-                return true;
-            }
-        } catch (RemoteException e) {
-            return false;
-        }
-        return false;
-    }
-
-    static IDreamManager getDreamManager() {
-        return IDreamManager.Stub.asInterface(
-                ServiceManager.checkService(DreamService.DREAM_SERVICE));
     }
 }
