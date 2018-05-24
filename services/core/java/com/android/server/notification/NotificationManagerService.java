@@ -317,8 +317,7 @@ public class NotificationManagerService extends SystemService {
     protected boolean mInCall = false;
     private boolean mNotificationPulseEnabled;
 
-    private int mSoundVibScreenOn;
-    private boolean mIsMediaPlaying;
+    private boolean mSoundVibScreenOn;
 
     private Uri mInCallNotificationUri;
     private AudioAttributes mInCallNotificationAudioAttributes;
@@ -1097,7 +1096,7 @@ public class NotificationManagerService extends SystemService {
             if (uri == null || NOTIFICATION_SOUND_VIB_SCREEN_ON.equals(uri)) {
                 mSoundVibScreenOn = Settings.System.getIntForUser(resolver,
                         Settings.System.NOTIFICATION_SOUND_VIB_SCREEN_ON, 1,
-                        UserHandle.USER_CURRENT);
+                        UserHandle.USER_CURRENT) == 1;
             }
             if (uri == null || MUTE_ANNOYING_NOTIFICATIONS_THRESHOLD_URI.equals(uri)) {
                 mAnnoyingNotificationThreshold = Settings.System.getLongForUser(resolver,
@@ -3097,10 +3096,6 @@ public class NotificationManagerService extends SystemService {
             new ShellCmd().exec(this, in, out, err, args, callback, resultReceiver);
         }
 
-        @Override
-        public void setMediaPlaying(boolean playing) {
-            mIsMediaPlaying = playing;
-        }
     };
 
     private void applyAdjustment(NotificationRecord r, Adjustment adjustment) {
@@ -4125,9 +4120,8 @@ public class NotificationManagerService extends SystemService {
         if (aboveThreshold && isNotificationForCurrentUser(record)) {
             boolean notificationIsAnnoying = notificationIsAnnoying(key, pkg);
             boolean beNoisy = (!mScreenOn && !notificationIsAnnoying)
-                    // if mScreenOn && mSoundVibScreenOn == 0 never be noisy
-                    || (mScreenOn && mSoundVibScreenOn == 1 && !notificationIsAnnoying)
-                    || (mScreenOn && mSoundVibScreenOn == 2 && !mIsMediaPlaying && !notificationIsAnnoying);
+                    // if mScreenOn && !mSoundVibScreenOn never be noisy
+                    || (mScreenOn && mSoundVibScreenOn && !notificationIsAnnoying);
             if (mSystemReady && mAudioManager != null && beNoisy) {
                 Uri soundUri = record.getSound();
                 hasValidSound = soundUri != null && !Uri.EMPTY.equals(soundUri);
