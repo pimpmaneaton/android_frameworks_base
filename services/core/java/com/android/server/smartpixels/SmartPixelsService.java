@@ -217,9 +217,6 @@ public class SmartPixelsService extends Service {
     }
 
     private void updatePattern() {
-        if (!mContext.getResources().getBoolean(com.android.internal.R.bool.config_enableBurnInProtection)) {
-            return;
-        }
         int shift = getShift();
         int shiftX = shift % Grids.GridSideSize;
         int shiftY = shift / Grids.GridSideSize;
