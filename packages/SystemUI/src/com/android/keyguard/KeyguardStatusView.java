@@ -49,6 +49,7 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.util.Log;
 import android.util.Slog;
 import android.util.TypedValue;
@@ -430,6 +431,7 @@ public class KeyguardStatusView extends GridLayout implements
                 params.addRule(RelativeLayout.BELOW, R.id.clock_view);
                 paramsWeather.addRule(RelativeLayout.BELOW, R.id.clock_view);
                 mClockView.setSingleLine(true);
+                mClockView.setGravity(Gravity.CENTER);
                 mAnalogClockView.unregisterReceiver();
                 mDeadPoolClockView.unregisterReceiver();
                 break;
@@ -437,6 +439,7 @@ public class KeyguardStatusView extends GridLayout implements
                 params.addRule(RelativeLayout.BELOW, R.id.clock_view);
                 paramsWeather.addRule(RelativeLayout.BELOW, R.id.clock_view);
                 mClockView.setSingleLine(true);
+                mClockView.setGravity(Gravity.CENTER);
                 mAnalogClockView.unregisterReceiver();
                 mDeadPoolClockView.unregisterReceiver();
                 break;
@@ -456,6 +459,7 @@ public class KeyguardStatusView extends GridLayout implements
                 params.addRule(RelativeLayout.BELOW, R.id.clock_view);
                 paramsWeather.addRule(RelativeLayout.BELOW, R.id.clock_view);
                 mClockView.setSingleLine(false);
+                mClockView.setGravity(Gravity.CENTER);
                 mAnalogClockView.unregisterReceiver();
                 mDeadPoolClockView.unregisterReceiver();
                 break;
@@ -463,6 +467,7 @@ public class KeyguardStatusView extends GridLayout implements
                 params.addRule(RelativeLayout.BELOW, R.id.clock_view);
                 paramsWeather.addRule(RelativeLayout.BELOW, R.id.clock_view);
                 mClockView.setSingleLine(false);
+                mClockView.setGravity(Gravity.CENTER);
                 mAnalogClockView.unregisterReceiver();
                 mDeadPoolClockView.unregisterReceiver();
                 break;
