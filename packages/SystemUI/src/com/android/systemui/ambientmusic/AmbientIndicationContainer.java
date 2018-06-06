@@ -120,7 +120,9 @@ public class AmbientIndicationContainer extends AutoReinflateContainer implement
                 }
             }
         }
-        if (charSequence != null) {
+        if (mScrollingInfo) {
+            // if we are already showing an Ambient Notification with track info,
+            // stop the current scrolling and start it delayed again for the next song
             setTickerMarquee(true);
         }
         mText.setText(charSequence);
