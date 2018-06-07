@@ -302,7 +302,7 @@ public class KeyguardStatusView extends GridLayout implements
             mClockView.setFormat24Hour(Patterns.clockView24);
         } else if (mClockSelection == 1) {
             mClockView.setFormat12Hour(Html.fromHtml("<strong>h</strong>:mm"));
-            mClockView.setFormat24Hour(Html.fromHtml("<strong>kk</strong>mm"));
+            mClockView.setFormat24Hour(Html.fromHtml("<strong>kk</strong>:mm"));
         } else if (mClockSelection == 5) {
             mClockView.setFormat12Hour(Html.fromHtml("<strong>h</strong><br>mm"));
             mClockView.setFormat24Hour(Html.fromHtml("<strong>kk</strong><br>mm"));
@@ -337,8 +337,17 @@ public class KeyguardStatusView extends GridLayout implements
         mAlarmStatusView.setVisibility(mShowAlarm && mAvailableAlarm ? View.VISIBLE : View.GONE);
     }
 
+    public void updateAll() {
+        updateSettings(true);
+        refresh();
+    }
+
     public int getClockBottom() {
         return mKeyguardStatusArea.getBottom();
+    }
+
+    public int getClockSelection() {
+        return mClockSelection;
     }
 
     public float getClockTextSize() {
@@ -439,12 +448,33 @@ public class KeyguardStatusView extends GridLayout implements
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mKeyguardStatusArea.getLayoutParams();
         RelativeLayout.LayoutParams paramsWeather = (RelativeLayout.LayoutParams) mWeatherView.getLayoutParams();
 
+        // Set smaller Clock, Date and OwnerInfo text size if the user selects the small clock type
 	if (mClockSelection == 6) {
 	    mClockView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                 getResources().getDimensionPixelSize(R.dimen.widget_small_font_size));
+
+	    // DateView
+            mDateView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+		getResources().getDimensionPixelSize(R.dimen.widget_label_small_font_size));
+
+            // OwnerInfo
+            if (mOwnerInfo != null) {
+            	mOwnerInfo.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                    getResources().getDimensionPixelSize(R.dimen.widget_label_small_font_size));
+            }
 	} else {
 	    mClockView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                 getResources().getDimensionPixelSize(R.dimen.widget_big_font_size));
+
+	    // DateView
+            mDateView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                getResources().getDimensionPixelSize(R.dimen.widget_label_font_size));
+
+            // OwnerInfo
+            if (mOwnerInfo != null) {
+            	mOwnerInfo.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                    getResources().getDimensionPixelSize(R.dimen.widget_label_font_size));
+            }
 	}
         switch (mClockSelection) {
             case 0: // default digital
@@ -639,7 +669,7 @@ public class KeyguardStatusView extends GridLayout implements
                 mDeadPoolClockView.setVisibility(View.GONE);
                 mSpideyClockView.setVisibility(View.GONE);
                 break;
-            case 6: // analog (spidey)
+            case 7: // analog (spidey)
                 mClockView.setVisibility(mShowClock ?
                                 (forceHide ? View.GONE : View.VISIBLE) : View.GONE);
                 mAnalogClockView.setVisibility(View.GONE);
