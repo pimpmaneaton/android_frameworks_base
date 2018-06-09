@@ -303,14 +303,14 @@ public class KeyguardStatusView extends GridLayout implements
         } else if (mClockSelection == 1) {
             mClockView.setFormat12Hour(Html.fromHtml("<strong>h</strong>:mm"));
             mClockView.setFormat24Hour(Html.fromHtml("<strong>kk</strong>:mm"));
-        } else if (mClockSelection == 5) {
-            mClockView.setFormat12Hour(Html.fromHtml("<strong>h</strong><br>mm"));
-            mClockView.setFormat24Hour(Html.fromHtml("<strong>kk</strong><br>mm"));
-        } else if (mClockSelection == 6) {
+        } else if (mClockSelection == 2) {
 	    mClockView.setFormat12Hour(Html.fromHtml("<strong>h:mm</strong>"));
             mClockView.setFormat24Hour(Html.fromHtml("<strong>kk:mm</strong>"));
+        } else if (mClockSelection == 6) {
+            mClockView.setFormat12Hour(Html.fromHtml("<strong>h</strong><br>mm"));
+            mClockView.setFormat24Hour(Html.fromHtml("<strong>kk</strong><br>mm"));
         } else {
-            mClockView.setFormat12Hour("hh\nmm");
+            mClockView.setFormat12Hour("h\nmm");
             mClockView.setFormat24Hour("kk\nmm");
         }
     }
@@ -449,7 +449,7 @@ public class KeyguardStatusView extends GridLayout implements
         RelativeLayout.LayoutParams paramsWeather = (RelativeLayout.LayoutParams) mWeatherView.getLayoutParams();
 
         // Set smaller Clock, Date and OwnerInfo text size if the user selects the small clock type
-	if (mClockSelection == 6) {
+	if (mClockSelection == 2) {
 	    mClockView.setTextSize(TypedValue.COMPLEX_UNIT_PX,
                 getResources().getDimensionPixelSize(R.dimen.widget_small_font_size));
 
@@ -488,7 +488,7 @@ public class KeyguardStatusView extends GridLayout implements
                 mSpideyClockView.unregisterReceiver();
                 break;
             case 1: // digital (bold)
-            case 6: // digital (small)
+            case 2: // digital (small)
                 params.addRule(RelativeLayout.BELOW, R.id.clock_view);
                 paramsWeather.addRule(RelativeLayout.BELOW, R.id.clock_view);
                 mClockView.setSingleLine(true);
@@ -497,45 +497,38 @@ public class KeyguardStatusView extends GridLayout implements
                 mDeadPoolClockView.unregisterReceiver();
                 mSpideyClockView.unregisterReceiver();
                 break;
-            case 2: // analog
+            case 3: // analog
                 params.addRule(RelativeLayout.BELOW, R.id.analog_clock_view);
                 paramsWeather.addRule(RelativeLayout.BELOW, R.id.analog_clock_view);
                 mAnalogClockView.registerReceiver();
                 mDeadPoolClockView.unregisterReceiver();
                 mSpideyClockView.unregisterReceiver();
                 break;
-            case 3: // analog (deadpool)
+            case 4: // analog (deadpool)
                 params.addRule(RelativeLayout.BELOW, R.id.deadpool_clock_view);
                 paramsWeather.addRule(RelativeLayout.BELOW, R.id.deadpool_clock_view);
                 mAnalogClockView.unregisterReceiver();
                 mDeadPoolClockView.registerReceiver();
                 mSpideyClockView.unregisterReceiver();
                 break;
-            case 4: // sammy
-                params.addRule(RelativeLayout.BELOW, R.id.clock_view);
-                paramsWeather.addRule(RelativeLayout.BELOW, R.id.clock_view);
-                mClockView.setSingleLine(false);
-                mClockView.setGravity(Gravity.CENTER);
-                mAnalogClockView.unregisterReceiver();
-                mDeadPoolClockView.unregisterReceiver();
-                mSpideyClockView.unregisterReceiver();
-                break;
-            case 5: // sammy (bold)
-                params.addRule(RelativeLayout.BELOW, R.id.clock_view);
-                paramsWeather.addRule(RelativeLayout.BELOW, R.id.clock_view);
-                mClockView.setSingleLine(false);
-                mClockView.setGravity(Gravity.CENTER);
-                mAnalogClockView.unregisterReceiver();
-                mDeadPoolClockView.unregisterReceiver();
-                mSpideyClockView.unregisterReceiver();
-                break;
-            case 7: //analog (spidey)
+            case 5: //analog (spidey)
                 params.addRule(RelativeLayout.BELOW, R.id.spidey_clock_view);
                 paramsWeather.addRule(RelativeLayout.BELOW, R.id.spidey_clock_view);
                 mAnalogClockView.unregisterReceiver();
                 mSpideyClockView.registerReceiver();
                 mDeadPoolClockView.unregisterReceiver();
                 break;
+            case 6: // sammy
+            case 7: // sammy (bold)
+                params.addRule(RelativeLayout.BELOW, R.id.clock_view);
+                paramsWeather.addRule(RelativeLayout.BELOW, R.id.clock_view);
+                mClockView.setSingleLine(false);
+                mClockView.setGravity(Gravity.CENTER);
+                mAnalogClockView.unregisterReceiver();
+                mDeadPoolClockView.unregisterReceiver();
+                mSpideyClockView.unregisterReceiver();
+                break;
+
         }
 
         switch (mDateSelection) {
@@ -634,47 +627,41 @@ public class KeyguardStatusView extends GridLayout implements
                 mSpideyClockView.setVisibility(View.GONE);
                 break;
             case 1: // digital (bold)
-            case 6: // digital (small)
+            case 2: // digital (small)
                 mClockView.setVisibility(mShowClock ?
                                 (forceHide ? View.GONE : View.VISIBLE) : View.GONE);
                 mAnalogClockView.setVisibility(View.GONE);
                 mDeadPoolClockView.setVisibility(View.GONE);
                 mSpideyClockView.setVisibility(View.GONE);
                 break;
-            case 2: // analog
+            case 3: // analog
                 mAnalogClockView.setVisibility(mShowClock ?
                                 (forceHide ? View.GONE : View.VISIBLE) : View.GONE);
                 mClockView.setVisibility(View.GONE);
                 mDeadPoolClockView.setVisibility(View.GONE);
                 mSpideyClockView.setVisibility(View.GONE);
                 break;
-            case 3: // analog (deadpool)
+            case 4: // analog (deadpool)
                 mDeadPoolClockView.setVisibility(mShowClock ?
                                 (forceHide ? View.GONE : View.VISIBLE) : View.GONE);
                 mAnalogClockView.setVisibility(View.GONE);
                 mClockView.setVisibility(View.GONE);
                 mSpideyClockView.setVisibility(View.GONE);
                 break;
-            case 4: // sammy
-                mClockView.setVisibility(mShowClock ?
-                                (forceHide ? View.GONE : View.VISIBLE) : View.GONE);
-                mAnalogClockView.setVisibility(View.GONE);
-                mDeadPoolClockView.setVisibility(View.GONE);
-                mSpideyClockView.setVisibility(View.GONE);
-                break;
-            case 5: // sammy (bold)
-                mClockView.setVisibility(mShowClock ?
-                                (forceHide ? View.GONE : View.VISIBLE) : View.GONE);
-                mAnalogClockView.setVisibility(View.GONE);
-                mDeadPoolClockView.setVisibility(View.GONE);
-                mSpideyClockView.setVisibility(View.GONE);
-                break;
-            case 7: // analog (spidey)
+            case 5: // analog (spidey)
                 mSpideyClockView.setVisibility(mShowClock ?
                                 (forceHide ? View.GONE : View.VISIBLE) : View.GONE);
                 mAnalogClockView.setVisibility(View.GONE);
                 mDeadPoolClockView.setVisibility(View.GONE);
                 mClockView.setVisibility(View.GONE);
+                break;
+            case 6: // sammy
+            case 7: // sammy (bold)
+                mClockView.setVisibility(mShowClock ?
+                                (forceHide ? View.GONE : View.VISIBLE) : View.GONE);
+                mAnalogClockView.setVisibility(View.GONE);
+                mDeadPoolClockView.setVisibility(View.GONE);
+                mSpideyClockView.setVisibility(View.GONE);
                 break;
         }
 
