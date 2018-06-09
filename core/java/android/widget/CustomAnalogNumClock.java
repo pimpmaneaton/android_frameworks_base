@@ -37,14 +37,14 @@ import java.util.TimeZone;
  * This widget display an analogic clock with two hands for hours and
  * minutes.
  *
- * @attr ref android.R.styleable#CustomAnalogClock_dial
- * @attr ref android.R.styleable#CustomAnalogClock_hand_hour
- * @attr ref android.R.styleable#CustomAnalogClock_hand_minute
+ * @attr ref android.R.styleable#CustomAnalogNumClock_dial
+ * @attr ref android.R.styleable#CustomAnalogNumClock_hand_hour
+ * @attr ref android.R.styleable#CustomAnalogNumClock_hand_minute
  * @deprecated This widget is no longer supported.
  */
 @RemoteView
 @Deprecated
-public class CustomAnalogClock extends View {
+public class CustomAnalogNumClock extends View {
     public Time mCalendar;
 
     public Drawable mHourHand;
@@ -65,39 +65,39 @@ public class CustomAnalogClock extends View {
 
     private boolean mRegisteredReceiver;
 
-    public CustomAnalogClock(Context context) {
+    public CustomAnalogNumClock(Context context) {
         this(context, null);
     }
 
-    public CustomAnalogClock(Context context, AttributeSet attrs) {
+    public CustomAnalogNumClock(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public CustomAnalogClock(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CustomAnalogNumClock(Context context, AttributeSet attrs, int defStyleAttr) {
         this(context, attrs, defStyleAttr, 0);
     }
 
-    public CustomAnalogClock(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public CustomAnalogNumClock(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
 
         final Resources r = context.getResources();
         final TypedArray a = context.obtainStyledAttributes(
-                attrs, com.android.internal.R.styleable.CustomAnalogClock, defStyleAttr, defStyleRes);
+                attrs, com.android.internal.R.styleable.CustomAnalogNumClock, defStyleAttr, defStyleRes);
 
-        mDial = a.getDrawable(com.android.internal.R.styleable.CustomAnalogClock_custom_dial);
+        mDial = a.getDrawable(com.android.internal.R.styleable.CustomAnalogNumClock_custom_num_dial);
         if (mDial == null) {
-            mDial = context.getDrawable(com.android.internal.R.drawable.custom_clock_dial);
+            mDial = context.getDrawable(com.android.internal.R.drawable.custom_clock_num_dial);
         }
-        mDialAmbient = context.getDrawable(com.android.internal.R.drawable.custom_clock_dial_ambient);
+        mDialAmbient = context.getDrawable(com.android.internal.R.drawable.custom_clock_num_dial_ambient);
 
-        mHourHand = a.getDrawable(com.android.internal.R.styleable.CustomAnalogClock_custom_hand_hour);
+        mHourHand = a.getDrawable(com.android.internal.R.styleable.CustomAnalogNumClock_custom_num_hand_hour);
         if (mHourHand == null) {
-            mHourHand = context.getDrawable(com.android.internal.R.drawable.custom_clock_hand_hour);
+            mHourHand = context.getDrawable(com.android.internal.R.drawable.custom_clock_num_hand_hour);
         }
 
-        mMinuteHand = a.getDrawable(com.android.internal.R.styleable.CustomAnalogClock_custom_hand_minute);
+        mMinuteHand = a.getDrawable(com.android.internal.R.styleable.CustomAnalogNumClock_custom_num_hand_minute);
         if (mMinuteHand == null) {
-            mMinuteHand = context.getDrawable(com.android.internal.R.drawable.custom_clock_hand_minute);
+            mMinuteHand = context.getDrawable(com.android.internal.R.drawable.custom_clock_num_hand_minute);
         }
 
         a.recycle();
@@ -246,7 +246,7 @@ public class CustomAnalogClock extends View {
             hourHand.setBounds(x - (w / 2), y - (h / 2), x + (w / 2), y + (h / 2));
         }
         if (mIsAmbientDisplay) {
-            hourHand.setTint(Color.GRAY);
+            hourHand.setTint(Color.WHITE);
         } else {
             hourHand.setTintList(null);
         }

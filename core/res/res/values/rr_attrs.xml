@@ -28,6 +28,13 @@
         <attr name="custom_hand_minute" format="reference"/>
     </declare-styleable>
 
+    <!-- Custom Analog clock with numbers -->
+    <declare-styleable name="CustomAnalogNumClock">
+        <attr name="custom_num_dial" format="reference"/>
+        <attr name="custom_num_hand_hour" format="reference"/>
+        <attr name="custom_num_hand_minute" format="reference"/>
+    </declare-styleable>
+
     <!-- DeadPool Analog clock -->
     <declare-styleable name="DeadPoolAnalogClock">
         <attr name="deadpool_dial" format="reference"/>

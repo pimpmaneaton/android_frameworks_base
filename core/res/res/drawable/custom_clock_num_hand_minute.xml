@@ -14,8 +14,8 @@
      limitations under the License.
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="150dp"
-    android:height="150dp"
+    android:width="150.000000dp"
+    android:height="150.000000dp"
     android:viewportWidth="512.000000"
     android:viewportHeight="512.000000">
 
@@ -24,12 +24,8 @@
             android:scaleX="0.100000"
             android:scaleY="-0.100000">
         <path
-            android:fillColor="@color/analog_clock_border_color"
+            android:fillColor="@color/analog_clock_hand_minute_color"
             android:strokeWidth="1"
-            android:pathData="M2250 5069 c-277 -32 -569 -120 -824 -248 -747 -377 -1254 -1106 -1346 -1936 -13 -116 -13 -434 0 -550 127 -1148 1037 -2058 2185 -2185 116 -13 434 -13 550 0 1148 128 2057 1037 2185 2185 13 116 13 434 0 550 -127 1148 -1037 2058 -2185 2185 -106 12 -458 11 -565 -1z" />
-        <path
-            android:fillColor="@color/analog_clock_face_color"
-            android:strokeWidth="1"
-            android:pathData="M2230 4864 c-480 -65 -924 -282 -1274 -623 -201 -197 -336 -382 -456 -626 -159 -323 -230 -634 -230 -1005 0 -371 71 -682 230 -1005 120 -244 255 -429 456 -626 354 -345 798 -560 1287 -624 153 -20 441 -20 594 0 489 64 933 279 1287 624 201 197 336 382 456 626 159 323 230 634 230 1005 0 427 -101 802 -313 1163 -122 206 -334 452 -522 604 -324 262 -726 434 -1138 488 -147 19 -462 18 -607 -1z" />
+            android:pathData="M2486 4529 l-26 -20 0 -946 0 -945 -25 -30 c-21 -24 -25 -40 -25 -90 0 -57 2 -63 39 -99 37 -37 42 -39 101 -39 59 0 64 2 101 39 37 36 39 42 39 99 0 50 -4 66 -25 90 l-25 30 0 945 0 946 -26 20 c-16 13 -41 21 -64 21 -23 0 -48 -8 -64 -21z" />
     </group>
 </vector>
