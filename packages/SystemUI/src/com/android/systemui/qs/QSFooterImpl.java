@@ -94,6 +94,7 @@ public class QSFooterImpl extends FrameLayout implements Tunable, QSFooter,
     private boolean mAlarmShowing;
     private boolean mServicesButtonVisible;
     private boolean mSettingsButtonVisible;
+    private boolean hasEdit;
 
     protected ExpandableIndicator mExpandIndicator;
 
@@ -345,6 +346,7 @@ public class QSFooterImpl extends FrameLayout implements Tunable, QSFooter,
         updateAlarmVisibilities();
         mSettingsContainer.findViewById(R.id.tuner_icon).setVisibility(View.INVISIBLE);
         final boolean isDemo = UserManager.isDeviceInDemoMode(mContext);
+        hasEdit = !isEditDisabled();
 
         mServicesButtonVisible = Settings.System.getInt(
                 mContext.getContentResolver(), Settings.System.QSFOOTER_SHOW_SERVICES,
@@ -357,7 +359,7 @@ public class QSFooterImpl extends FrameLayout implements Tunable, QSFooter,
         mMultiUserSwitch.setVisibility(mExpanded && mMultiUserSwitch.hasMultipleUsers() && !isDemo
                 ? View.VISIBLE : View.INVISIBLE);
 
-        mEdit.setVisibility(isDemo || !mExpanded ? View.INVISIBLE : View.VISIBLE);
+        mEdit.setVisibility(hasEdit ?  isDemo || !mExpanded ? View.INVISIBLE : View.VISIBLE : View.GONE);
 
         mRunningServicesButton.setVisibility(mServicesButtonVisible ? (!isDemo && mExpanded
                 ? View.VISIBLE : View.INVISIBLE) : View.GONE);
@@ -387,6 +389,11 @@ public class QSFooterImpl extends FrameLayout implements Tunable, QSFooter,
         if (mQsPanel != null) {
             mMultiUserSwitch.setQsPanel(qsPanel);
         }
+    }
+
+    public boolean isEditDisabled() {
+        return Settings.System.getInt(mContext.getContentResolver(),
+            Settings.System.QS_EDIT_TOGGLE, 0) == 1;
     }
 
     @Override
