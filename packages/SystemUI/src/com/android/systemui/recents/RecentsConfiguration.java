@@ -107,10 +107,11 @@ public class RecentsConfiguration implements NextAlarmChangeCallback {
     /** Misc **/
     public boolean fakeShadows;
     public int svelteLevel;
+    private Context mContext;
 
     // Whether this product supports Grid-based Recents. If this is field is set to true, then
     // Recents will layout task views in a grid mode when there's enough space in the screen.
-    public boolean isGridEnabled;
+    private boolean isGridEnabled;
 
     // Support for Android Recents for low ram devices. If this field is set to true, then Recents
     // will use the alternative layout.
@@ -125,46 +126,16 @@ public class RecentsConfiguration implements NextAlarmChangeCallback {
     public int fabEnterAnimDelay;
     public int fabExitAnimDuration;
 
-    // Whether this product supports Grid-based Recents. If this is field is set to true, then
-    // Recents will layout task views in a grid mode when there's enough space in the screen.
-    private boolean isGridEnabledDefault;
-    private boolean mIsGridEnabled;
-    private Handler mHandler = new Handler();
-    private SettingsObserver mSettingsObserver;
-
-    private class SettingsObserver extends ContentObserver {
-        SettingsObserver(Handler handler) {
-            super(handler);
-        }
-
-        void observe() {
-            mAppContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.RECENTS_GRID),
-                    false, this);
-            update();
-        }
-
-        @Override
-        public void onChange(boolean selfChange) {
-            update();
-        }
-
-        public void update() {
-            mIsGridEnabled = Settings.System.getIntForUser(mAppContext.getContentResolver(),
-                    Settings.System.RECENTS_GRID, isGridEnabledDefault ? 1 : 0,
-                    UserHandle.USER_CURRENT) == 1;
-        }
-    }
-
     public RecentsConfiguration(Context context) {
         // Load only resources that can not change after the first load either through developer
         // settings or via multi window
         SystemServicesProxy ssp = Recents.getSystemServices();
         mAppContext = context.getApplicationContext();
         Resources res = mAppContext.getResources();
+        mContext = mAppContext;
         fakeShadows = res.getBoolean(R.bool.config_recents_fake_shadows);
         svelteLevel = res.getInteger(R.integer.recents_svelte_level);
-        isGridEnabledDefault = SystemProperties.getBoolean("ro.recents.grid", false);
+        isGridEnabled = SystemProperties.getBoolean("ro.recents.grid", false);
         isLowRamDevice = ActivityManager.isLowRamDeviceStatic();
         dragToSplitEnabled = !isLowRamDevice;
 
@@ -183,8 +154,6 @@ public class RecentsConfiguration implements NextAlarmChangeCallback {
         fabExitAnimDuration =
                 res.getInteger(R.integer.recents_animate_fab_exit_duration);
 
-        mSettingsObserver = new SettingsObserver(mHandler);
-        mSettingsObserver.observe();
     }
 
     /**
@@ -208,10 +177,6 @@ public class RecentsConfiguration implements NextAlarmChangeCallback {
         } else {
             return isLandscape ? DockRegion.PHONE_LANDSCAPE : DockRegion.PHONE_PORTRAIT;
         }
-    }
-
-    public boolean isGridEnabled() {
-        return mIsGridEnabled;
     }
 
     public void setMediaPlaying(boolean playing, String packageName) {
@@ -315,5 +280,10 @@ public class RecentsConfiguration implements NextAlarmChangeCallback {
 
     public boolean isAlarmActive() {
         return !mAlarm.isEmpty();
+    }
+
+    public boolean isGridEnabled() {
+        return Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.RECENTS_GRID, isGridEnabled ? 1 : 0, UserHandle.USER_CURRENT) == 1;
     }
 }
