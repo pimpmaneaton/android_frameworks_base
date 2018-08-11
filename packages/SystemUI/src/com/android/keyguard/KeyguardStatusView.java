@@ -342,7 +342,7 @@ public class KeyguardStatusView extends GridLayout implements
         } else if (mClockSelection == 2) {
 	    mClockView.setFormat12Hour(Html.fromHtml("<strong>h:mm</strong>"));
             mClockView.setFormat24Hour(Html.fromHtml("<strong>kk:mm</strong>"));
-        } else if (mClockSelection == 6) {
+        } else if (mClockSelection == 8) {
             mClockView.setFormat12Hour(Html.fromHtml("<strong>h</strong><br>mm"));
             mClockView.setFormat24Hour(Html.fromHtml("<strong>kk</strong><br>mm"));
         } else if (mClockSelection == 12) {
