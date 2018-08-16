@@ -21,7 +21,6 @@ import android.app.Fragment;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
-import android.os.Build;
 import android.provider.Settings.Secure;
 import android.support.annotation.VisibleForTesting;
 import android.util.DisplayMetrics;
@@ -67,12 +66,8 @@ public class RoundedCorners extends SystemUI implements Tunable {
         }
         int padding = mContext.getResources().getDimensionPixelSize(
                 R.dimen.rounded_corner_content_padding);
-        int padding_alt = mContext.getResources().getDimensionPixelSize(
-                R.dimen.rounded_corner_content_padding_alt);
-        if (padding != 0 && Build.PRODUCT.equals("taimen")) {
+        if (padding != 0) {
             setupPadding(padding);
-        } else {
-            setupPadding(padding_alt);
         }
     }
 
