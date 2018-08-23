@@ -351,6 +351,9 @@ public class KeyguardStatusView extends GridLayout implements
         } else if (mClockSelection == 13) {
             mClockView.setFormat12Hour(Html.fromHtml("<font color='#454545'>h</font><br><font color=" + getResources().getColor(R.color.sammy_minutes_accent) + ">mm</font>"));
             mClockView.setFormat24Hour(Html.fromHtml("<font color='#454545'>kk</font><br><font color=" + getResources().getColor(R.color.sammy_minutes_accent) + ">mm</font>"));
+        } else if (mClockSelection == 14) {
+            mClockView.setFormat12Hour(Html.fromHtml("<font color=" + getResources().getColor(R.color.sammy_minutes_accent) + ">h</font><br><font color=" + getResources().getColor(R.color.sammy_minutes_accent) + ">:mm</font>"));
+            mClockView.setFormat24Hour(Html.fromHtml("<font color=" + getResources().getColor(R.color.sammy_minutes_accent) + ">kk</font><br><font color=" + getResources().getColor(R.color.sammy_minutes_accent) + ">:mm</font>"));
         } else {
             mClockView.setFormat12Hour("h\nmm");
             mClockView.setFormat24Hour("kk\nmm");
@@ -535,6 +538,7 @@ public class KeyguardStatusView extends GridLayout implements
                 break;
             case 1: // digital (bold)
             case 2: // digital (small)
+            case 14: // digital (accent)
                 params.addRule(RelativeLayout.BELOW, R.id.clock_view);
                 paramsWeather.addRule(RelativeLayout.BELOW, R.id.clock_view);
                 mClockView.setSingleLine(true);
@@ -845,6 +849,7 @@ public class KeyguardStatusView extends GridLayout implements
                 break;
             case 1: // digital (bold)
             case 2: // digital (small)
+            case 14: // digital (accent)
                 mClockView.setVisibility(mShowClock ?
                                 (forceHide ? View.GONE : View.VISIBLE) : View.GONE);
                 mAnalogClockView.setVisibility(View.GONE);
@@ -936,6 +941,7 @@ public class KeyguardStatusView extends GridLayout implements
             case 8: // sammy (bold)
                 mClockView.setVisibility(mShowClock ?
                                 (forceHide ? View.GONE : View.VISIBLE) : View.GONE);
+                mClockView.setLineSpacing(-40f,1f); 
                 mAnalogClockView.setVisibility(View.GONE);
                 mDeadPoolClockView.setVisibility(View.GONE);
                 mSpideyClockView.setVisibility(View.GONE);
@@ -950,6 +956,7 @@ public class KeyguardStatusView extends GridLayout implements
                                 (forceHide ? View.GONE : View.VISIBLE) : View.GONE);
                 mClockView.setTextSize(TypedValue.COMPLEX_UNIT_PX, 
                 getResources().getDimensionPixelSize(R.dimen.widget_sammy_accent_font_size)); 
+                mClockView.setLineSpacing(-40f,1f); 
                 mAnalogClockView.setVisibility(View.GONE);
                 mDeadPoolClockView.setVisibility(View.GONE);
                 mSpideyClockView.setVisibility(View.GONE);
