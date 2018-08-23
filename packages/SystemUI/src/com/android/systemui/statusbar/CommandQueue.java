@@ -90,6 +90,7 @@ public class CommandQueue extends IStatusBar.Stub {
     private static final int MSG_DISPATCH_NAVIGATION_EDITOR_RESULTS = 42 << MSG_SHIFT;
     private static final int MSG_TOGGLE_PIE_ORIENTATION = 43 << MSG_SHIFT;
     private static final int MSG_SET_AUTOROTATE_STATUS         = 44 << MSG_SHIFT;
+    private static final int MSG_ROTATION_PROPOSAL             = 45 << MSG_SHIFT;
 
     public static final int FLAG_EXCLUDE_NONE = 0;
     public static final int FLAG_EXCLUDE_SEARCH_PANEL = 1 << 0;
@@ -157,6 +158,7 @@ public class CommandQueue extends IStatusBar.Stub {
         default void dispatchNavigationEditorResults(Intent intent) {}
         default void toggleOrientationListener(boolean enable) {}
         default void setAutoRotate(boolean enabled) { }
+        default void onRotationProposal(int rotation, boolean isValid) { }
     }
 
     @VisibleForTesting
@@ -528,6 +530,15 @@ public class CommandQueue extends IStatusBar.Stub {
         }
     }
 
+    @Override
+    public void onProposedRotationChanged(int rotation, boolean isValid) {
+        synchronized (mLock) {
+            mHandler.removeMessages(MSG_ROTATION_PROPOSAL);
+            mHandler.obtainMessage(MSG_ROTATION_PROPOSAL, rotation, isValid ? 1 : 0,
+                    null).sendToTarget();
+        }
+    }
+
     private final class H extends Handler {
         private H(Looper l) {
             super(l);
@@ -758,6 +769,11 @@ public class CommandQueue extends IStatusBar.Stub {
                 case MSG_SET_AUTOROTATE_STATUS:
                     for (int i = 0; i < mCallbacks.size(); i++) {
                         mCallbacks.get(i).setAutoRotate(msg.arg1 != 0);
+                    }
+                    break;
+                case MSG_ROTATION_PROPOSAL:
+                    for (int i = 0; i < mCallbacks.size(); i++) {
+                        mCallbacks.get(i).onRotationProposal(msg.arg1, msg.arg2 != 0);
                     }
                     break;
             }
