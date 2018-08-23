@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8.0dip"
         android:src="@drawable/ic_music_note_24dp"
-        android:tint="?attr/wallpaperTextColorSecondary"
+        android:tint="@color/accent_date_color"
         android:tintMode="src_in"
         android:forceHasOverlappingRendering="false" />
 
