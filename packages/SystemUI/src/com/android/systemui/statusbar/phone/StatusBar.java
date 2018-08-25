@@ -1117,6 +1117,11 @@ public class StatusBar extends SystemUI implements DemoMode,
                 mThemeSettingsObserver,
                 UserHandle.USER_ALL);
 
+        mContext.getContentResolver().registerContentObserver(
+                Settings.System.getUriFor(Settings.System.ALWAYS_HEADSUP_DIALER), false,
+                mSettingsObserver,
+                UserHandle.USER_ALL);
+
         mBarService = IStatusBarService.Stub.asInterface(
                 ServiceManager.getService(Context.STATUS_BAR_SERVICE));
 
@@ -6814,6 +6819,7 @@ public class StatusBar extends SystemUI implements DemoMode,
     protected boolean mUseHeadsUp = false;
     protected boolean mHeadsUpTicker = false;
     protected boolean mDisableNotificationAlerts = false;
+    private boolean mIsAlwaysHeadsupDialer;
 
     protected DevicePolicyManager mDevicePolicyManager;
     protected PowerManager mPowerManager;
@@ -6935,6 +6941,9 @@ public class StatusBar extends SystemUI implements DemoMode,
             final int mode = Settings.Global.getInt(mContext.getContentResolver(),
                     Settings.Global.ZEN_MODE, Settings.Global.ZEN_MODE_OFF);
             setZenMode(mode);
+
+            mIsAlwaysHeadsupDialer = Settings.System.getIntForUser(mContext.getContentResolver(),
+                    Settings.System.ALWAYS_HEADSUP_DIALER, 0, UserHandle.USER_CURRENT) == 1;
 
             updateLockscreenNotificationSetting();
         }
@@ -9061,7 +9070,26 @@ public class StatusBar extends SystemUI implements DemoMode,
             return false;
         }
 
-        if ((!mUseHeadsUp || isDeviceInVrMode()) && !isDozing()) {
+        // get the info from the currently running task
+        List<ActivityManager.RunningTaskInfo> taskInfo = mAm.getRunningTasks(1);
+        if(taskInfo != null && !taskInfo.isEmpty()) {
+            ComponentName componentInfo = taskInfo.get(0).topActivity;
+            if(isPackageInBlacklist(componentInfo.getPackageName())
+                && !isDialerApp(sbn.getPackageName())) {
+                return false;
+            }
+        }
+
+        ActivityManager.RunningTaskInfo foregroundApp = null;
+        if (taskInfo != null && !taskInfo.isEmpty()) {
+            foregroundApp = taskInfo.get(0);
+        }
+        boolean isDialerForegroundApp = foregroundApp != null &&
+                foregroundApp.baseActivity.getPackageName().toLowerCase().contains("dialer");
+        boolean isNotificationFromDialer = sbn.getPackageName().toLowerCase().contains("dialer");
+
+        boolean alwaysHeadsUpForThis = !isDialerForegroundApp && isNotificationFromDialer && mIsAlwaysHeadsupDialer;
+	if ((!isDozing() && !mUseHeadsUp && !alwaysHeadsUpForThis) || isDeviceInVrMode()) {
             if (DEBUG) Log.d(TAG, "No peeking: no huns or vr mode");
             return false;
         }
@@ -9145,6 +9173,11 @@ public class StatusBar extends SystemUI implements DemoMode,
                 arrayList.add(item.trim());
             }
         }
+    }
+
+     private boolean isDialerApp(String packageName) {
+        return packageName.equals("com.android.dialer")
+            || packageName.equals("com.google.android.dialer");
     }
 
     /**
