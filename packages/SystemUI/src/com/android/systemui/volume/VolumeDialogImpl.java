@@ -136,6 +136,7 @@ public class VolumeDialogImpl implements VolumeDialog, TunerService.Tunable {
     private boolean mShowing;
     private boolean mExpanded;
     private boolean mShowA11yStream;
+    private boolean mForceExpanded;
 
     private int mActiveStream;
     private int mPrevActiveStream;
@@ -313,6 +314,7 @@ public class VolumeDialogImpl implements VolumeDialog, TunerService.Tunable {
         mZenPanel = (TunerZenModePanel) mDialog.findViewById(R.id.tuner_zen_mode_panel);
         mZenPanel.init(mZenModeController);
         mZenPanel.setCallback(mZenPanelCallback);
+        updateForceExpanded();
     }
 
     @Override
@@ -425,6 +427,7 @@ public class VolumeDialogImpl implements VolumeDialog, TunerService.Tunable {
         writer.println(VolumeDialogImpl.class.getSimpleName() + " state:");
         writer.print("  mShowing: "); writer.println(mShowing);
         writer.print("  mExpanded: "); writer.println(mExpanded);
+        writer.print("  mForceExpanded: "); writer.println(mForceExpanded);
         writer.print("  mExpandButtonAnimationRunning: ");
         writer.println(mExpandButtonAnimationRunning);
         writer.print("  mActiveStream: "); writer.println(mActiveStream);
@@ -562,7 +565,7 @@ public class VolumeDialogImpl implements VolumeDialog, TunerService.Tunable {
         }
         int mVolumeDialogTimeout = Settings.System.getInt(mContext.getContentResolver(),
                     Settings.System.VOLUME_DIALOG_TIMEOUT, 3000);
-        if (mExpanded || mExpandButtonAnimationRunning) return mVolumeDialogTimeout;
+        if (mExpanded || mForceExpanded || mExpandButtonAnimationRunning) return mVolumeDialogTimeout;
         if (mActiveStream == AudioManager.STREAM_MUSIC) return mVolumeDialogTimeout;
         return mVolumeDialogTimeout;
     }
@@ -693,9 +696,17 @@ public class VolumeDialogImpl implements VolumeDialog, TunerService.Tunable {
             return true;
         }
 
+        final boolean isForceExpanded = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.VOLUME_DIALOG_FORCE_EXPANDED, 0) == 1;
+        if (isForceExpanded) {
+                    return mExpanded && row.view.getVisibility() == View.VISIBLE
+                        || (mForceExpanded && (row.important || isActive))
+                        || !mForceExpanded && isActive;
+        }
+
         return mExpanded && row.view.getVisibility() == View.VISIBLE
-                || (mExpanded && (row.important || isActive))
-                || !mExpanded && isActive;
+                 || (mExpanded && (row.important || isActive))
+                 || !mExpanded && isActive;
     }
 
     private void updateRowsH(final VolumeRow activeRow) {
@@ -703,6 +714,7 @@ public class VolumeDialogImpl implements VolumeDialog, TunerService.Tunable {
         setVolumeStroke();
         setVolumeAlpha();
         handleVolumeDialogBackround();
+        updateForceExpanded();
         if (!mShowing) {
             trimObsoleteH();
         }
@@ -934,7 +946,7 @@ public class VolumeDialogImpl implements VolumeDialog, TunerService.Tunable {
     }
 
     private void updateVolumeRowSliderTintH(VolumeRow row, boolean isActive) {
-        if (isActive && mExpanded) {
+        if (isActive && mForceExpanded) {
             row.slider.requestFocus();
         }
         final ColorStateList tint = isActive && row.slider.isEnabled() ? mActiveSliderTint
@@ -1131,6 +1143,7 @@ public class VolumeDialogImpl implements VolumeDialog, TunerService.Tunable {
             updateWindowWidthH();
             mConfigurableTexts.update();
             mZenFooter.onConfigurationChanged();
+            updateForceExpanded();
         }
 
         @Override
@@ -1404,6 +1417,11 @@ public class VolumeDialogImpl implements VolumeDialog, TunerService.Tunable {
         private ObjectAnimator anim;  // slider progress animation for non-touch-related updates
         private int animTargetProgress;
         private int lastAudibleLevel = 1;
+    }
+
+    private void updateForceExpanded() {
+        mForceExpanded = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.VOLUME_DIALOG_FORCE_EXPANDED, 0) == 1;
     }
 
     private void setVolumeAlpha() {
