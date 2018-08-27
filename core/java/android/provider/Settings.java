@@ -6008,6 +6008,11 @@ public final class Settings {
          */
         public static final String ALWAYS_HEADSUP_DIALER = "always_headsup_dialer";
 
+        /**
+         * @hide
+         */
+        public static final String USE_BOTTOM_GESTURE_NAVIGATION = "use_bottom_gesture_navigation";
+
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
@@ -6195,10 +6200,13 @@ public final class Settings {
             PRIVATE_SETTINGS.add(QS_ROWS_LANDSCAPE);
             PRIVATE_SETTINGS.add(QS_COLUMNS_PORTRAIT);
             PRIVATE_SETTINGS.add(QS_COLUMNS_LANDSCAPE);
-			PRIVATE_SETTINGS.add(HEADS_UP_NOTIFICATION_SNOOZE);
-			PRIVATE_SETTINGS.add(HEADS_UP_TIMEOUT);
+            PRIVATE_SETTINGS.add(HEADS_UP_NOTIFICATION_SNOOZE);
+            PRIVATE_SETTINGS.add(HEADS_UP_TIMEOUT);
             PRIVATE_SETTINGS.add(RECENTS_OMNI_SWITCH_ENABLED);
-			PRIVATE_SETTINGS.add(SPLITSCREEN_FORCE_SYSTEMBAR_ENABLED);
+            PRIVATE_SETTINGS.add(SPLITSCREEN_FORCE_SYSTEMBAR_ENABLED);
+	    PRIVATE_SETTINGS.add(ASPECT_RATIO_APPS_LIST);
+	    PRIVATE_SETTINGS.add(ASPECT_RATIO_APPS_ENABLED);
+            PRIVATE_SETTINGS.add(USE_BOTTOM_GESTURE_NAVIGATION);
         }
 
         /**
