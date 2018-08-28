@@ -365,6 +365,9 @@ public class KeyguardIndicationController implements
                             mTextView.setTypeface(mTextView.getTypeface(), Typeface.ITALIC);
                             mTextView.switchIndication(weatherIndicator);
                         }
+                        if ((mWeatherCurrentTemp == null) && (mWeatherConditionText == null)) {
+                            mTextView.switchIndication(mContext.getResources().getString(R.string.ambient_weather_no_permission));
+                        }
                     } else {
                         mTextView.switchIndication(null);
                     }
