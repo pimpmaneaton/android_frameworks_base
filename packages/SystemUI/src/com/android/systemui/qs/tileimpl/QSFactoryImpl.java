@@ -69,6 +69,7 @@ import com.android.systemui.qs.tiles.SyncTile;
 import com.android.systemui.qs.tiles.SmartPixelsTile;
 import com.android.systemui.qs.tiles.SoundTile;
 import com.android.systemui.qs.tiles.SoundSearchTile;
+import com.android.systemui.qs.tiles.ScreenStabilizationTile;
 import com.android.systemui.qs.tiles.UsbTetherTile;
 import com.android.systemui.qs.tiles.ScreenshotTile;
 import com.android.systemui.qs.tiles.UserTile;
@@ -137,6 +138,7 @@ public class QSFactoryImpl implements QSFactory {
         else if (tileSpec.equals("high_brightness")) return new HighBrightnessTile(mHost);
         else if (tileSpec.equals("immersive")) return new ImmersiveTile(mHost);
         else if (tileSpec.equals("gaming")) return new GamingModeTile(mHost);
+	else if (tileSpec.equals("screenstabilization")) return new ScreenStabilizationTile(mHost);
         // Intent tiles.
         else if (tileSpec.startsWith(IntentTile.PREFIX)) return IntentTile.create(mHost, tileSpec);
         else if (tileSpec.startsWith(CustomTile.PREFIX)) return CustomTile.create(mHost, tileSpec);
