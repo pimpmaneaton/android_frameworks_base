@@ -2,7 +2,7 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:height="28.0dip" 
 	android:width="28.0dip"
-	android:tint="?attr/colorControlNormal"
+	android:tint="@*android:color/accent_device_default_light"
     android:viewportWidth="248.855"
     android:viewportHeight="248.855">
 
