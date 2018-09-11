@@ -4228,6 +4228,18 @@ public final class Settings {
         public static final String LOCKSCREEN_CLOCK_SELECTION = "lockscreen_clock_selection";
 
         /**
+         *  Weather to use a custom color for the visualizer on the lock screen
+         * @hide
+         */
+        public static final String LOCK_SCREEN_VISUALIZER_USE_CUSTOM_COLOR = "lock_screen_visualizer_use_custom_color";
+
+         /**
+         *  Custom color of the visualizer on the lock screen
+         * @hide
+         */
+        public static final String LOCK_SCREEN_VISUALIZER_CUSTOM_COLOR = "lock_screen_visualizer_custom_color";
+
+        /**
          * Whether to display the advanced reboot option in the power menu
          *
          * @hide
