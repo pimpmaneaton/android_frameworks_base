@@ -7119,6 +7119,12 @@ public class StatusBar extends SystemUI implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.Secure.SYSUI_ROUNDED_FWVALS),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.LOCKSCREEN_ALPHA),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.LOCKSCREEN_SECURITY_ALPHA),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
@@ -7240,6 +7246,8 @@ public class StatusBar extends SystemUI implements DemoMode,
             updateClockStyle();
             updateTickerAnimation();
             updateKeyguardStatusSettings();
+            setNewOverlayAlpha();
+            setSecurityAlpha();
         }
     }
 
@@ -7332,6 +7340,22 @@ public class StatusBar extends SystemUI implements DemoMode,
                     Settings.System.BLUR_LIGHT_COLOR_PREFERENCE_KEY, Color.DKGRAY);
             RecentsActivity.updateBlurColors(mBlurDarkColorFilter,mBlurMixedColorFilter,mBlurLightColorFilter);
             RecentsActivity.updateRadiusScale(mScaleRecents,mRadiusRecents);
+    }
+
+    public void setNewOverlayAlpha() { 
+        float overlayalpha = Settings.System.getFloatForUser(mContext.getContentResolver(), 
+        Settings.System.LOCKSCREEN_ALPHA, 0.45f, UserHandle.USER_CURRENT); 
+        if (mScrimController != null) { 
+        mScrimController.setOverlayAlpha(overlayalpha); 
+    	} 
+    }
+
+    public void setSecurityAlpha() {
+        float securityoverlayalpha = Settings.System.getFloatForUser(mContext.getContentResolver(),
+        Settings.System.LOCKSCREEN_SECURITY_ALPHA, 0.75f, UserHandle.USER_CURRENT);
+        if (mScrimController != null) {
+        mScrimController.setSecurityOverlayAlpha(securityoverlayalpha);
+        }
     }
 
     protected final ContentObserver mNavbarObserver = new ContentObserver(mHandler) {

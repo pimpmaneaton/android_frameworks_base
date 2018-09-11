@@ -239,7 +239,7 @@ public class VisualizerView extends View
     }
 
     private void setVisualizerEnabled() {
-        mVisualizerEnabled = Settings.Secure.getInt(mContext.getContentResolver(),
+        mVisualizerEnabled = LineageSettings.Secure.getInt(mContext.getContentResolver(),
                 LineageSettings.Secure.LOCKSCREEN_VISUALIZER_ENABLED, 0) == 1;
     }
 
@@ -406,7 +406,7 @@ public class VisualizerView extends View
 
         protected void observe() {
             ContentResolver resolver = mContext.getContentResolver();
-            resolver.registerContentObserver(Settings.Secure.getUriFor(
+            resolver.registerContentObserver(LineageSettings.Secure.getUriFor(
                 LineageSettings.Secure.LOCKSCREEN_VISUALIZER_ENABLED),
                 false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
@@ -425,7 +425,7 @@ public class VisualizerView extends View
         @Override
         public void onChange(boolean selfChange, Uri uri) {
             ContentResolver resolver = mContext.getContentResolver();
-            if (uri.equals(Settings.Secure.getUriFor(
+            if (uri.equals(LineageSettings.Secure.getUriFor(
                     LineageSettings.Secure.LOCKSCREEN_VISUALIZER_ENABLED))) {
                 setVisualizerEnabled();
                 checkStateChanged();

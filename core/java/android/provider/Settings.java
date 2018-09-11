@@ -4240,6 +4240,18 @@ public final class Settings {
         public static final String LOCK_SCREEN_VISUALIZER_CUSTOM_COLOR = "lock_screen_visualizer_custom_color";
 
         /**
+         * change lockscreen alpha color
+         * @hide
+         */
+        public static final String LOCKSCREEN_ALPHA = "lockscreen_alpha";
+
+        /**
+         * change lockscreen security alpha color
+         * @hide
+         */
+        public static final String LOCKSCREEN_SECURITY_ALPHA = "lockscreen_security_alpha";
+
+        /**
          * Whether to display the advanced reboot option in the power menu
          *
          * @hide
